@@ -80,6 +80,15 @@ public class Draggerble : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         if (Physics.Raycast(ray, out hit))
         {
+            //땅에 박히는 문제
+            float cubeHeight = 0f;
+            var collider = cubePrefab.GetComponent<Collider>();
+            if (collider != null)
+            {
+                cubeHeight = collider.bounds.extents.y; // 높이절반
+            }
+            Vector3 spawnPos = hit.point + hit.normal * cubeHeight;
+
             Instantiate(cubePrefab, hit.point, Quaternion.identity);
         }
     }
