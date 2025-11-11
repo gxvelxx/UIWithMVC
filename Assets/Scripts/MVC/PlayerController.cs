@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerView playerView; // UI 패널이 어딘가 있다고 가정
     PlayerModel playerModel; // 플레이어이름 등등
 
-    InputAction damageAction;
+    InputAction healHitAction;
     InputAction moveAction;
     InputAction jumpAction;
 
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
             playerView = Object.FindAnyObjectByType<PlayerView>();
         }
 
-        damageAction = InputSystem.actions["Attack"];
+        healHitAction = InputSystem.actions["HealHit"];
         moveAction = InputSystem.actions["Move"];
         jumpAction = InputSystem.actions["Jump"];
     }
@@ -67,18 +67,25 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        damageAction.performed += OnDamageTriggered;
+        healHitAction.performed += OnHealHitTriggered;
         jumpAction.Enable();
     }
     private void OnDisable()
     {
-        damageAction.performed -= OnDamageTriggered;
+        healHitAction.performed -= OnHealHitTriggered;
         jumpAction.Disable();
     }
 
-    void OnDamageTriggered(InputAction.CallbackContext ctx)
+    void OnHealHitTriggered(InputAction.CallbackContext ctx)
     {
-        playerModel.TakeDamage(10);
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            playerModel.TakeHeal(10);
+        }
+        else if (Keyboard.current.gKey.wasPressedThisFrame)
+        {
+            playerModel.TakeHit(10);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -13,7 +13,13 @@ public class PlayerModel
     public event Action<int> OnHealthChange; // 체력 변했을 때 발동시킬 메서드 등록하는 곳
     public event Action<int> OnjumpCountChange; // 점프횟수 알림
 
-    public void TakeDamage(int amount)
+    public void TakeHeal(int amount)
+    {
+        health = health + amount;
+        OnHealthChange?.Invoke(health);
+    }
+
+    public void TakeHit(int amount)
     {
         health = health - amount;
         OnHealthChange?.Invoke(health);
