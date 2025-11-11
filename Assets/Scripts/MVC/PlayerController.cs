@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerModel.OnHealthChange += playerView.UpdateHealthUI; // 여기가 핵심코드! 연결을 담당하는 컨트롤러가 분리되었음
+        playerModel.OnjumpCountChange += playerView.UpdateJumpUI;
         playerView.UpdateHealthUI(playerModel.Health);
+        playerView.UpdateJumpUI(playerModel.JumpCount);
 
         rb = GetComponent<Rigidbody>();
 
@@ -93,6 +95,8 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpSpeed, rb.linearVelocity.z);
             isGround = false;
+
+            playerModel.AddJumpCount();
         }    
     }
 }
